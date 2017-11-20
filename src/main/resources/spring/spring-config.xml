@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+<context:component-scan base-package="com.lanou3g.ssh"/>
+
+    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!--配置数据库的四大属性-->
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/day13crm?characterEncoding=utf-8"/>
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="user" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+       <!--初始化SessionFactory对象-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="datasource"/>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    </bean>
+       <!--创建事务管理器对象-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+      <!--登录-->
+    <bean id="loginDao" class="com.lanou3g.login.dao.impl.LoginDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="loginService" class="com.lanou3g.login.service.impl.LoginServiceImpl">
+        <property name="loginDao" ref="loginDao"/>
+    </bean>
+
+    <bean id="loginAction" class="com.lanou3g.login.action.LoginAction" scope="prototype">
+        <property name="service" ref="loginService"/>
+    </bean>
+
+
+    <tx:advice id="userAdvisor" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置切面-->
+    <aop:config>
+        <!--声明切点-->
+        <aop:pointcut id="userPointCut" expression="execution(* com.lanou3g.*.dao.impl.*.*(..))"/>
+        <!--配置顾问-->
+        <aop:advisor advice-ref="userAdvisor" pointcut-ref="userPointCut"/>
+    </aop:config>
+
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <!--设置为开发模式,log日志会多一些-->
+    <constant name="struts.devMode" value="true"/>
+    <!--让spring管理action对象的创建, 配置也可以不写
+    因为在struts2-spring-plugin里面已经有了-->
+    <!--关联,引入-->
+    <include file="struts/post-struts.xml"/>
+    <include file="struts/dept-struts.xml"/>
+    <include file="struts/staff-struts.xml"/>
+
+    <package name="login" extends="interceptor">
+        <default-class-ref class="loginAction"/>
+        <!--用户登录-->
+        <action name="login" method="login">
+            <result name="success">/pages/frame.jsp</result>
+            <result name="error">/pages/login.jsp</result>
+        </action>
+
+        <!--更改密码-->
+        <action name="editPassword" method="updatePassword">
+            <result name="success">/pages/login.jsp</result>
+            <result name="error">/pages/staff/updPwd.jsp</result>
+        </action>
+        <!--退出登录-->
+        <action name="exitLogin" method="exitLogin">
+            <result name="success">/pages/login.jsp</result>
+        </action>
+    </package>
+
+    <!--拦截器配置:  在登录前拦截login的action-->
+    <package name="interceptor" extends="json-default">
+        <interceptors>
+            <interceptor name="loginInterceptor"
+                         class="com.lanou3g.login.action.LoginInterceptor">
+                <!--拦截器要放行的方法-->
+                <param name="excludeMethods">login</param>
+            </interceptor>
+            <!--自定义拦截器栈,包含2个拦截器(登录/默认)-->
+            <interceptor-stack name="crmInterceptorStack">
+                <interceptor-ref name="loginInterceptor"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <!--默认使用自定义拦截器栈-->
+        <default-interceptor-ref name="crmInterceptorStack"/>
+        <!--全局结果集-->
+        <global-results>
+            <result name="login">/pages/login.jsp</result>
+        </global-results>
+    </package>
+
+
+</struts>

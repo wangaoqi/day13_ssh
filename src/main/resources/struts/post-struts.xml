@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+    <package name="post" extends="interceptor">
+
+        <default-class-ref class="postAction"/>
+        <!--查询职务-->
+        <action name="postQuery" method="query">
+            <result name="success">/pages/post/listPost.jsp</result>
+        </action>
+
+        <!--对职务进行添加或编辑的方法-->
+        <action name="postSaveOrUpdate" method="saveOrUpdate">
+            <result name="success" type="chain">postQuery</result>
+        </action>
+
+
+        <!--点击添加走的action-->
+        <action name="findsDepartments"
+                method="findDepartment">
+            <result name="success">/pages/post/addOrEditPost.jsp</result>
+        </action>
+
+        <!--根据职位Id查对应信息-->
+        <action name="findByPostId" method="findByPostId">
+            <result name="success" type="chain">findsDepartments</result>
+        </action>
+
+    </package>
+
+
+</struts>

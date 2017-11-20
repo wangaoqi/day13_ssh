@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <!--部门的 类-->
+    <!--继承hibernateSupportDao的sessionFactory,给其赋值-->
+    <bean name="deptDao" class="com.lanou3g.department.dao.impl.DeptDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--第一个deptDao是service的属性  第二个是上面对应的id-->
+    <bean name="deptService" class="com.lanou3g.department.service.impl.DeptServiceImpl">
+        <property name="deptDao" ref="deptDao"/>
+    </bean>
+
+    <!--action不能单例-->
+    <bean name="deptAction" class="com.lanou3g.department.action.DeptAction"
+          scope="prototype">
+        <property name="service" ref="deptService"/>
+    </bean>
+
+
+
+
+
+</beans>

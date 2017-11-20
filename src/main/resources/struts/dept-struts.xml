@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+  <struts>
+    <package name="dept" extends="interceptor">
+
+        <default-class-ref class="deptAction"/>
+        <!--查询部门-->
+        <action name="deptQuery"
+                method="query">
+            <result name="success">/pages/department/listDepartment.jsp</result>
+        </action>
+
+
+        <!--点击添加和编辑走的方法-->
+        <action name="deptSave"
+                method="saveOrUpdate">
+            <result name="success" type="redirectAction">deptQuery</result>
+        </action>
+
+
+        <!--编辑时显示对应的部门-->
+        <action name="findByDepId" method="findByDepId">
+            <result name="success">/pages/department/addOrEditDepartment.jsp</result>
+        </action>
+
+
+        <!--点击跳转到添加页面-->
+        <action name="skip">
+            <result name="success">/pages/department/addOrEditDepartment.jsp</result>
+        </action>
+
+    </package>
+
+</struts>

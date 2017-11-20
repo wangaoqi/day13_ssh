@@ -1,0 +1,110 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+        <struts>
+   <package name="staff" extends="interceptor" >
+        <default-class-ref class="staffAction"/>
+
+
+       <!--查询所有-->
+       <action name="findAll"
+               method="findAll">
+           <result name="success" >/pages/staff/listStaff.jsp</result>
+       </action>
+
+       <!--二级联动listStaff.jsp-->
+       <action name="findDepartments"
+               method="findDepartment">
+           <result name="success" type="chain">findAll</result>
+       </action>
+       <action name="findPostes"
+               method="findPosts">
+           <result name="success" type="json">
+               <param name="root">postList</param>
+               <param name="includeProperties">
+                   \[\d\]\.postId,
+                   \[\d\]\.postName
+               </param>
+           </result>
+       </action>
+
+
+
+
+       <!--二级联动添加  department/post-->
+        <action name="findDepartment"
+                method="findDepartment">
+            <result name="success">/pages/staff/addStaff.jsp</result>
+        </action>
+       <action name="findPosts" method="findPosts">
+           <result name="success" type="json">
+               <!--ajax解析 root 对应要解析的集合-->
+               <param name="root">postList</param>
+               <!--要解析的内容-->
+               <param name="includeProperties">
+                   \[\d\]\.postId,
+                   \[\d\]\.postName
+               </param>
+           </result>
+       </action>
+       <!--员工添加 ,重定向到findAll的action里-->
+       <action name="addStaff"
+               method="save" >
+           <result name="success" type="redirectAction">findAll</result>
+       </action>
+
+
+       <!--点击编辑走的action-->
+       <action name="findByStaffId" method="findByStaffId">
+           <result name="success" type="chain">staffFindDepartment</result>
+       </action>
+
+       <!-- editStaff.jsp 二级联动编辑-->
+       <action name="staffFindDepartment"
+               method="findDepartment">
+           <result name="success">/pages/staff/editStaff.jsp</result>
+       </action>
+       <action name="findPosts"
+               method="findPosts">
+           <result name="success" type="json">
+               <param name="root">postList</param>
+               <!--解析-->
+               <param name="includeProperties">
+                   \[\d\]\.postId,
+                   \[\d\]\.postName
+               </param>
+           </result>
+       </action>
+
+       <!--编辑员工信息-->
+       <action name="edit"
+               method="update">
+           <result name="success"
+                   type="redirectAction">findAll</result>
+       </action>
+
+
+
+       <action name="updatePassword" method="updatePassword">
+           <result name="success" type="redirect">/pages/login.jsp</result>
+           <result name="error">/pages/staff/updPwd.jsp</result>
+       </action>
+
+
+       <!--模糊查询-->
+       <action name="findSome" method="findSome">
+           <result type="json" name="success">
+               <param name="root">some</param>
+               <param name="excludeProperties">
+                   \[\d\]\.post\.department\.postSet,
+                   \[\d\]\.post\.staffSet
+               </param>
+           </result>
+       </action>
+
+   </package>
+
+
+
+
+</struts>

@@ -1,0 +1,21 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.lanou3g.ssh.department.domain">
+    <class name="com.lanou3g.staff.domain.Staff" table="T_STAFF">
+        <id name="staffId" column="STAFF_ID">
+            <generator class="uuid"/>
+        </id>
+        <property name="staffName"/>
+        <property name="loginName"/>
+        <property name="loginPwd"/>
+        <property name="gender"/>
+        <property name="onDutyDate"/>
+
+        <many-to-one name="post"
+                     class="com.lanou3g.post.domain.Post"
+                     column="POST_ID"
+                     lazy="false"/>
+
+    </class>
+</hibernate-mapping>
