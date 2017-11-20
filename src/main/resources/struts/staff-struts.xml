@@ -6,19 +6,14 @@
         <default-class-ref class="staffAction"/>
 
 
-       <!--查询所有-->
-       <action name="findAll"
-               method="findAll">
-           <result name="success" >/pages/staff/listStaff.jsp</result>
-       </action>
 
        <!--二级联动listStaff.jsp-->
        <action name="findDepartments"
-               method="findDepartment">
+       method="findDepartment">
            <result name="success" type="chain">findAll</result>
        </action>
        <action name="findPostes"
-               method="findPosts">
+       method="findPosts">
            <result name="success" type="json">
                <param name="root">postList</param>
                <param name="includeProperties">
@@ -32,10 +27,10 @@
 
 
        <!--二级联动添加  department/post-->
-        <action name="findDepartment"
-                method="findDepartment">
-            <result name="success">/pages/staff/addStaff.jsp</result>
-        </action>
+       <action name="findDepartment"
+       method="findDepartment">
+           <result name="success">/pages/staff/addStaff.jsp</result>
+       </action>
        <action name="findPosts" method="findPosts">
            <result name="success" type="json">
                <!--ajax解析 root 对应要解析的集合-->
@@ -49,7 +44,7 @@
        </action>
        <!--员工添加 ,重定向到findAll的action里-->
        <action name="addStaff"
-               method="save" >
+       method="save" >
            <result name="success" type="redirectAction">findAll</result>
        </action>
 
@@ -61,11 +56,11 @@
 
        <!-- editStaff.jsp 二级联动编辑-->
        <action name="staffFindDepartment"
-               method="findDepartment">
+       method="findDepartment">
            <result name="success">/pages/staff/editStaff.jsp</result>
        </action>
        <action name="findPosts"
-               method="findPosts">
+       method="findPosts">
            <result name="success" type="json">
                <param name="root">postList</param>
                <!--解析-->
@@ -78,20 +73,22 @@
 
        <!--编辑员工信息-->
        <action name="edit"
-               method="update">
+       method="update">
            <result name="success"
-                   type="redirectAction">findAll</result>
+           type="redirectAction">findAll</result>
        </action>
 
 
 
+
+       <!--更改密码-->
        <action name="updatePassword" method="updatePassword">
            <result name="success" type="redirect">/pages/login.jsp</result>
            <result name="error">/pages/staff/updPwd.jsp</result>
        </action>
 
 
-       <!--模糊查询-->
+       <!--二级联动查询-->
        <action name="findSome" method="findSome">
            <result type="json" name="success">
                <param name="root">some</param>
@@ -102,6 +99,11 @@
            </result>
        </action>
 
+       <!--查询所有-->
+       <action name="findAll"
+               method="findAll">
+           <result name="success" >/pages/staff/listStaff.jsp</result>
+       </action>
    </package>
 
 

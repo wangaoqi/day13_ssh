@@ -58,7 +58,7 @@
 		<tr>
 			<td width="10%">所属部门：</td>
 			<td width="20%">
-				<select name="post.department.depId" onchange="onPostSelected(value)" id="department">
+				<select name="post.department.depId" onchange="onChange(this.value)" id="department">
 					<%--遍历部门--%>
 					<s:iterator value="#departmentL" var="dep">
 						<s:if test="%{#dep.depId.equals(#byStaffId.post.department.depId)}">

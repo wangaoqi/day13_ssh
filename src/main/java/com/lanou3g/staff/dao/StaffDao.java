@@ -26,14 +26,6 @@ public interface StaffDao {
      */
     List<Post> findPost(String depId);
 
-    /**
-     * 高级查询
-     * @param postId
-     * @param depId
-     * @param staffName
-     * @return
-     */
-    List<Staff> findPostIdAndDepId(String postId,String depId,String staffName);
 
     /**
      * 根据员工Id查询对应的员工信息
@@ -43,7 +35,7 @@ public interface StaffDao {
     List<Staff> findByStaffId(Staff staff);
 
     /**
-     * 模糊查询
+     * 高级查询
      * @param ss
      * @return
      */

@@ -5,9 +5,7 @@ import com.lanou3g.post.domain.Post;
 import com.lanou3g.staff.dao.StaffDao;
 import com.lanou3g.staff.domain.Staff;
 import com.lanou3g.staff.service.StaffService;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -47,10 +45,6 @@ public class StaffServiceImpl implements StaffService{
         return staffDao.findPost(depId);
     }
 
-    @Override
-    public List<Staff> findPostIdAndDepId(String postId, String depId, String staffName) {
-        return staffDao.findPostIdAndDepId(depId,postId,staffName);
-    }
 
     @Override
     public List<Staff> findByStaffId(Staff staff) {
@@ -58,6 +52,11 @@ public class StaffServiceImpl implements StaffService{
         return staffDao.findByStaffId(staff);
     }
 
+    /**
+     * 高级查询
+     * @param staff
+     * @return
+     */
     @Override
     public List<Staff> findSome(Staff staff) {
         String depId = staff.getPost().getDepartment().getDepId();
@@ -82,34 +81,34 @@ public class StaffServiceImpl implements StaffService{
      */
     public String returnSql(String depId, String postId, String staffName){
         String sql;
-        // 三个都空
+        // 部门Id/职务Id/员工姓名都为空
         if (depId.equals("-1")&&postId.equals("-1")&&staffName.equals("")){
             sql = "";
             return sql;
         }
-        // 前两个空
+        // 部门Id和职务Id为空
         if (depId.equals("-1")&&postId.equals("-1")){
             sql = "and staffName like '%" + staffName + "%'";
             return sql;
         }
-        // 后两个空
+        // 职务Id和员工姓名为空
         if (postId.equals("-1")&&staffName.equals("")){
             sql = "and post.department.depId='" + depId + "'";
             return sql;
         }
-        // 后一个空
+        // 员工姓名为空
         if (staffName.equals("")){
             sql="and post.department.depId ='" + depId + "' and post.postId='" + postId + "'";
             return sql;
         }
 
-        // 中间空
+        // 职务Id为空
         if (postId.equals("-1")){
             sql = "and post.department.depId='" + depId + "' and staffName like '%" + staffName + "%'";
             return sql;
         }
 
-        // 三个都不空
+        // 三个都不为空
         sql = "and post.department.depId='" + depId + "' and post.postId='"
                 + postId + "' and staffName like '%" + staffName + "%'";
 

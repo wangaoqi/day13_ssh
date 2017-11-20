@@ -20,7 +20,6 @@ public class StaffAction extends BaseAction<Staff,StaffService>{
 
     private String depId;
     private String postId;
-    private String post_postId;
 
     private List<Staff> staffs;
     private List<Department> departmentList;
@@ -38,7 +37,6 @@ public class StaffAction extends BaseAction<Staff,StaffService>{
     //查询所有
     public String findAll(){
         staffs = service.findAll();
-        staffs = service.findPostIdAndDepId(depId,postId,getModel().getStaffName());
         ActionContext.getContext().put("staffs",staffs);
         return SUCCESS;
     }
@@ -57,12 +55,20 @@ public class StaffAction extends BaseAction<Staff,StaffService>{
         return SUCCESS;
     }
 
+    /**
+     * 高级查询
+     * @return
+     */
     public String findSome(){
         some = service.findSome(getModel());
         return SUCCESS;
     }
 
 
+    /**
+     * 查询部门
+     * @return
+     */
     public String findDepartment(){
         departmentList = service.findDepartment();
         contextPut("departmentL",departmentList);
@@ -92,7 +98,10 @@ public class StaffAction extends BaseAction<Staff,StaffService>{
         return SUCCESS;
     }
 
-    //更改密码
+    /**
+     * 更改密码
+     * @return
+     */
     public String updatePassword(){
         Staff list = (Staff) ActionContext.getContext().getSession().get("sta");
         if (!list.getLoginPwd().equals(MD5Util.MD5(oldPassword))||
@@ -148,15 +157,6 @@ public class StaffAction extends BaseAction<Staff,StaffService>{
     public void setPostList(List<Post> postList) {
         this.postList = postList;
     }
-
-    public String getPost_postId() {
-        return post_postId;
-    }
-
-    public void setPost_postId(String post_postId) {
-        this.post_postId = post_postId;
-    }
-
 
     public String getOldPassword() {
         return oldPassword;

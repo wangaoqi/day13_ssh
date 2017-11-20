@@ -136,7 +136,7 @@
 		 return td;
 	 }
 
-      //模糊查询
+      //高级查询
 	 function onStaffSelected() {
 		 var data = new FormData();
 		 data.append("post.department.depId", document.getElementById("department").value);
@@ -152,6 +152,7 @@
 				 json = eval("(" + this.responseText + ")");
 
 				 serverSelect = document.getElementById("tb");
+				 //返回带有指定标签名的对象的集合
 				 optionEle = serverSelect.getElementsByTagName("tr");
 				 length = optionEle.length;
 				 for (var i = 0; i < length; i++){
@@ -173,7 +174,7 @@
 			 }
 		 });
 
-		 xhr.open("POST", "http://localhost:8080/findSome");
+		 xhr.open("POST", "findSome.action");
 		 xhr.send(data);
 	 }
 

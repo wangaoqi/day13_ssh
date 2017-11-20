@@ -32,38 +32,6 @@ public class StaffDaoImpl extends HibernateDaoSupport implements StaffDao{
     }
 
 
-    /**
-     * 高级查询的判断条件
-     * @param postId
-     * @param depId
-     * @param staffName
-     * @return
-     */
-    @Override
-    public List<Staff> findPostIdAndDepId(String postId, String depId, String staffName) {
-
-        if (postId==null && depId==null && staffName==null){
-            return (List<Staff>) getHibernateTemplate().find("from Staff staff");
-        }
-        //条件全部为空
-        if ("".equals(postId) && "".equals(depId) && "".equals(staffName)) {
-            return (List<Staff>) getHibernateTemplate().find("from Staff staff");
-        }
-        //部门depID和职务postId不为空且staffName为空
-        else if (!"".equals(postId) && !"".equals(depId) && "".equals(staffName)) {
-            return (List<Staff>) getHibernateTemplate().find("from Staff staff where post.postId=? and post.department.depId=?", postId, depId);
-        }
-        //部门depID不为空且职务postId为空且staffName为空
-        else if ("".equals(postId) && !"".equals(depId) && "".equals(staffName)) {
-            return (List<Staff>) getHibernateTemplate().find("from Staff staff where post.department.depId=?", depId);
-        }
-        //部门depID和职务postId为空staffName不为空
-        else if ("".equals(postId) && "".equals(depId) && !"".equals(staffName)){
-            return (List<Staff>) getHibernateTemplate().find("from Staff staff where staffName=?",staffName);
-        }
-        //条件全有
-        return (List<Staff>) getHibernateTemplate().find("from Staff staff ");
-    }
 
     @Override
     public List<Staff> findByStaffId(Staff staff) {
@@ -72,12 +40,13 @@ public class StaffDaoImpl extends HibernateDaoSupport implements StaffDao{
     }
 
     /**
-     * 模糊查询
+     * 高级查询
      * @param ss 判断之后的拼接sql语句
      * @return
      */
     @Override
     public List<Staff> findSome(String ss) {
+        //按照想要的方式去拼接sql语句
         String sql = "from Staff where 1=1 " + ss;
         return (List<Staff>) getHibernateTemplate().find(sql);
     }

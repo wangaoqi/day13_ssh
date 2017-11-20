@@ -15,6 +15,7 @@
     <include file="struts/staff-struts.xml"/>
 
     <package name="login" extends="interceptor">
+
         <default-class-ref class="loginAction"/>
         <!--用户登录-->
         <action name="login" method="login">
@@ -22,11 +23,7 @@
             <result name="error">/pages/login.jsp</result>
         </action>
 
-        <!--更改密码-->
-        <action name="editPassword" method="updatePassword">
-            <result name="success">/pages/login.jsp</result>
-            <result name="error">/pages/staff/updPwd.jsp</result>
-        </action>
+
         <!--退出登录-->
         <action name="exitLogin" method="exitLogin">
             <result name="success">/pages/login.jsp</result>
@@ -42,14 +39,14 @@
                 <param name="excludeMethods">login</param>
             </interceptor>
             <!--自定义拦截器栈,包含2个拦截器(登录/默认)-->
-            <interceptor-stack name="crmInterceptorStack">
+            <interceptor-stack name="wbInterceptorStack">
                 <interceptor-ref name="loginInterceptor"/>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
         </interceptors>
         <!--默认使用自定义拦截器栈-->
-        <default-interceptor-ref name="crmInterceptorStack"/>
-        <!--全局结果集-->
+        <default-interceptor-ref name="wbInterceptorStack"/>
+        <!--全局结果集,每一个action都可以使用这个result-->
         <global-results>
             <result name="login">/pages/login.jsp</result>
         </global-results>

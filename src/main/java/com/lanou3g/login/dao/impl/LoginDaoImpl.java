@@ -13,8 +13,7 @@ public class LoginDaoImpl extends HibernateDaoSupport implements LoginDao {
     public List<Staff> query(String loginName, String loginPwd) {
         Object[] value = {loginName,loginPwd};
         String sql = "from Staff T_STAFF where loginName = ? and loginPwd = ?";
-        List<Staff> list = (List<Staff>) getHibernateTemplate()
-                .find(sql, value);
+        List<Staff> list = (List<Staff>) getHibernateTemplate().find(sql, value);
         return list;
     }
 
